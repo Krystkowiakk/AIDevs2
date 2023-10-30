@@ -1,6 +1,6 @@
 # AIDevs.pl Second Edition Course Repository
 
-This repository contains the code for the second edition of the [AIDevs.pl](http://aidevs.pl) course, a 5-week practical course blending Generative AI tools, particularly OpenAI models, with RAG, application logic and automation tools.
+This repository contains the code for the second edition of the AIDevs, a 5-week practical program blending Generative AI tools, particularly OpenAI models, with RAG, application logic and automation tools.
 
 The course is instructed by:
 
