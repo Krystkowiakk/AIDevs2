@@ -10,5 +10,8 @@ The course is instructed by:
   
 ## Getting Started
 
-To get started with the code in this repository, ensure you have enrolled in the course. For more information on the course visit [AIDevs.pl](http://aidevs.pl).
+1. Complete the .env file in /utilities:
+AI_DEVS_API_KEY = "enter your AIDevs API code"
+OPEN_AI_API_KEY="enter your AIDevs API code"
 
+2. My solutions for AIDevs tasks are in AIDevs2.ipynb, starting from the newest at the top.
