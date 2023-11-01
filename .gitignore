@@ -1,7 +1,6 @@
 # related to the project
 .env
 
-
 # macOS system files
 .DS_Store
 .AppleDouble
