@@ -10,7 +10,7 @@ The course is instructed by:
   
 ## Getting Started
 
-1. Complete the .env file in /utilities:
+1. Complete the .env file:
 AI_DEVS_API_KEY = "enter your AIDevs API code"
 OPEN_AI_API_KEY="enter your AIDevs API code"
 
