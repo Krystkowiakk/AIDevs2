@@ -34,6 +34,26 @@ class OpenAIClient:
             print(f"An error occurred: {e}")
             return None
         
+    @staticmethod
+    def get_embedding(text, model="text-embedding-ada-002"):
+        """
+        Get a vector embedding from OpenAI for a given text.
+        
+        :param text: Text to generate embedding for.
+        :param model: OpenAI model to use for embedding.
+        :return: Embedding vector or None if request fails.
+        """
+        text = text.replace("\n", " ")
+        try:
+            response = openai.Embedding.create(input=[text], model=model)
+            return response['data'][0]['embedding']
+        except openai.error.OpenAIError as e:
+            print(f"OpenAI error: {e}")
+            return None
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+        
 #OpenAIClient.get_completion("What is the capital of France?")
 
 class AIDevsClient:
@@ -98,6 +118,7 @@ class AIDevsClient:
         """
         payload = {"answer": answer}
         return self._make_request("post", f"answer/{token}", payload)
+    
 
 ### Initialize the APIClient with your base URL and API key.
 #api_client = AIDevsClient(base_url=BASE_URL, api_key=API_KEY)

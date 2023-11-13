@@ -1,5 +1,7 @@
 # related to the project
 .env
+unknow_news.pkl
+unknow_news.db
 
 # macOS system files
 .DS_Store
