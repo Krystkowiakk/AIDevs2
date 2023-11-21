@@ -113,8 +113,6 @@ class OpenAIClient:
             print(f"An error occurred: {e}")
             return None
 
-        
-#OpenAIClient.get_completion("What is the capital of France?")
 
 class AIDevsClient:
     """
