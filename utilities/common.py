@@ -38,6 +38,28 @@ class OpenAIClient:
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
+
+    def get_completion_use_tools(self, prompt, tools, model="gpt-4-1106-preview", tool_choice="auto"):
+        """
+        Create a chat completion with custom messages and tools.
+
+        :param messages: List of messages for the chat.
+        :param tools: List of tools to be used in the chat.
+        :param model: The OpenAI model to use.
+        :return: Chat completion response or None if request fails.
+        """
+        messages = [{"role": "user", "content": prompt}]
+        try:
+            response = self.client.chat.completions.create(
+                model=model,
+                messages=messages,
+                tools=tools,
+                tool_choice="auto",
+            )
+            return response
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
         
     def moderate_content(self, content):
         """
