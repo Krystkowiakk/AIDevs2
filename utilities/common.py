@@ -113,6 +113,37 @@ class OpenAIClient:
             print(f"An error occurred: {e}")
             return None
 
+    def image_analyze(self, image_url, question, model="gpt-4-vision-preview", max_tokens=300):
+        """
+        Analyze an image using GPT-4 with Vision.
+
+        :param image_url: URL of the image to be analyzed.
+        :param question: Question about the image.
+        :param model: The GPT-4 model with vision capabilities.
+        :param max_tokens: Maximum tokens in the response.
+        :return: Analysis response or None if request fails.
+        """
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": question},
+                    {"type": "image_url", "image_url": {"url": image_url}},
+                ],
+            }
+        ]
+        try:
+            response = self.client.chat.completions.create(
+                model=model,
+                messages=messages,
+                max_tokens=max_tokens,
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
+
 
 class AIDevsClient:
     """
