@@ -1,4 +1,4 @@
-import openai
+from openai import OpenAI
 import requests
 
 class OpenAIClient:
@@ -6,12 +6,19 @@ class OpenAIClient:
     A client to interact with OpenAI's API.
     Provides a method to obtain completions.
     """
-    
-    @staticmethod
-    def get_completion(prompt, model="gpt-4", max_tokens=300, temperature=0.3):
+
+    def __init__(self, api_key):
+        """
+        Initialize the OpenAI client with an API key.
+
+        :param api_key: API key for OpenAI. If None, it defaults to the environment variable.
+        """
+        self.client = OpenAI(api_key=api_key)
+
+    def get_completion(self, prompt, model="gpt-4", max_tokens=300, temperature=0.3):
         """
         Get a completion response from OpenAI for a given prompt.
-        
+
         :param prompt: Text prompt for the completion.
         :param model: OpenAI model to use.
         :param max_tokens: Maximum tokens in the response.
@@ -20,22 +27,34 @@ class OpenAIClient:
         """
         messages = [{"role": "user", "content": prompt}]
         try:
-            response = openai.ChatCompletion.create(
+            chat_completion = self.client.chat.completions.create(
                 model=model,
                 messages=messages,
                 temperature=temperature,
                 max_tokens=max_tokens,
             )
-            return response.choices[0].message["content"]
-        except openai.error.OpenAIError as e:
-            print(f"OpenAI error: {e}")
-            return None
+            # Accessing the message content from the response object
+            return chat_completion.choices[0].message.content
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
         
-    @staticmethod
-    def get_embedding(text, model="text-embedding-ada-002"):
+    def moderate_content(self, content):
+        """
+        Send content to the Moderation endpoint.
+
+        :param content: The content to be moderated.
+        :return: 1 if flagged, else 0.
+        """
+        try:
+            response = self.client.moderations.create(input=content)
+            flagged = int(response.results[0].flagged)
+            return flagged
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
+    def get_embedding(self, text, model="text-embedding-ada-002"):
         """
         Get a vector embedding from OpenAI for a given text.
         
@@ -45,14 +64,33 @@ class OpenAIClient:
         """
         text = text.replace("\n", " ")
         try:
-            response = openai.Embedding.create(input=[text], model=model)
-            return response['data'][0]['embedding']
-        except openai.error.OpenAIError as e:
+            response = self.client.embeddings.create(input=text, model=model)
+            # Accessing the embedding from the response object's attributes
+            return response.data[0].embedding
+        except OpenAIError as e:
             print(f"OpenAI error: {e}")
             return None
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
+
+    def audio_transcription(self, file_path, model="whisper-1"):
+        """
+        Create an audio transcription using OpenAI's API.
+
+        :param file_path: Path to the audio file to be transcribed.
+        :param model: The OpenAI model to use for transcription.
+        :return: Transcription result or None if request fails.
+        """
+        try:
+            # Ensure the file is a PathLike instance
+            transcript = self.client.audio.transcriptions.create(model=model, file=file_path).text
+            # Accessing and returning the transcription result
+            return transcript
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
         
 #OpenAIClient.get_completion("What is the capital of France?")
 
