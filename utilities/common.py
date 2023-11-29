@@ -144,7 +144,6 @@ class OpenAIClient:
             return None
 
 
-
 class AIDevsClient:
     """
     A client to interact with a given API.
